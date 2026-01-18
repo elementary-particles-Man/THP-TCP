@@ -1,0 +1,22 @@
+{
+  "version": "1.0.1",
+  "fixed_tokens": {
+    "1": "HELLO",
+    "2": "HELLO_ACK",
+    "3": "DICT_SNAPSHOT",
+    "4": "DICT_ACK",
+    "5": "UPGRADE",
+    "6": "ERROR",
+    "7": "HEARTBEAT",
+    "16": "PROPOSE",
+    "17": "ACCEPT",
+    "18": "REJECT",
+    "19": "UPDATE"
+  },
+  "context_range": {"from": 128, "to": 255},
+  "notes": [
+    "Contextual tokens (128-255) MUST NOT be used before DICT_ACK(status=accepted).",
+    "CBOR payloads MUST be deterministic.",
+    "Logical message size is unbounded; per-datagram is bounded by negotiated max_datagram; fragmentation uses msg_id/part_no/part_total."
+  ]
+}
