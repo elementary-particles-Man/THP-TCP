@@ -1,8 +1,6 @@
 [workspace]
 members = [
-    "src/api_server",
-    "src/cli",
-    "src/utils",
+    "src/thp_tcp_translator",
 ]
 
 [profile.dev]

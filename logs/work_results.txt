@@ -1,3 +1,0 @@
-result: OK
-summary: "KAIRO Mesh Seed Node automatic testing and scenario prototypes (RFC, seed_node_recovery_test.rs, gossip_trust_flow_test.rs) generated. CI workflow updated for new tests and archive path ignore."
-timestamp: "(投入時刻)"
