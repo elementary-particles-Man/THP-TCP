@@ -92,3 +92,4 @@ node_modules/
 # Any generated FlatBuffers files if needed
 *.fbs_generated.*
 .codex_backups/
+Olds/
