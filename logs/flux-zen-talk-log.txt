@@ -721,3 +721,12 @@
     }
   }
 }
+
+[System]
+{
+  "aes_gcm_key_mgmt_v1": {
+    "reviewer": "Zen",
+    "status": "OK",
+    "focus": ["transcript", "nonce format", "AAD fields"]
+  }
+}
