@@ -1,7 +1,10 @@
 # THP-TCP v1.0.1 Addendum
+
+Related specs:
+- Phase0 Frame+Flags: `docs/spec/THP-TCP-Phase0-Frame+Flags-v1.0.md`
+  - Table: `docs/spec/tables/thp-tcp-phase0-flags-v1.0.json`
 - Nickname Addressing: `docs/spec/THP-TCP-Nickname-Addressing-v1.0.md`
   - Table: `docs/spec/tables/thp-tcp-nickname-fields-v1.0.json`
-
 
 > **Normative Addendum v1.0.2:** See `docs/spec/THP-TCP-v1.0.2-Addendum.md` for FLAGS, u16 LEN, fragmentation header, and CONT/UPDATE separation.
 

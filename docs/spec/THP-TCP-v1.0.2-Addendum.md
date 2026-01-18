@@ -1,7 +1,10 @@
 # THP-TCP v1.0.2 Addendum
+
+Related specs:
+- Phase0 Frame+Flags: `docs/spec/THP-TCP-Phase0-Frame+Flags-v1.0.md`
+  - Table: `docs/spec/tables/thp-tcp-phase0-flags-v1.0.json`
 - Nickname Addressing: `docs/spec/THP-TCP-Nickname-Addressing-v1.0.md`
   - Table: `docs/spec/tables/thp-tcp-nickname-fields-v1.0.json`
-
 
 > **Normative CBOR Field Tables:** See `docs/spec/THP-TCP-CBOR-FieldTables-v1.0.md` and `docs/spec/tables/thp-tcp-cbor-fields-v1.0.json` for required/optional keys, unknown-key policy, and key space ranges.
 
