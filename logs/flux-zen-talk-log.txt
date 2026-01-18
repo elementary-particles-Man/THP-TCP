@@ -754,3 +754,13 @@
     ]
   }
 }
+
+[Zen/Phase0-Flags/v1.0]
+- time_utc: 2026-01-18T23:25:25Z
+- prompt_file: docs/devlogs/opencode/prompt_phase0_flags_v1.0_20260119_082314.txt
+- prompt_sha256: 4dde061fa6101d889825bfe88e4a2b97d411e3368c89e14148e70a0f1541bfef
+- opencode_output_json: docs/devlogs/opencode/zen_phase0_flags_v1.0_20260119_082314.json
+- output_sha256: 62cca109ed71ecdb6c12654a4f96719f10e2c884fb8d3f87a25315ce6ed1af7d
+- materialized:
+  - docs/spec/THP-TCP-Phase0-Frame+Flags-v1.0.md
+  - docs/spec/tables/thp-tcp-phase0-flags-v1.0.json

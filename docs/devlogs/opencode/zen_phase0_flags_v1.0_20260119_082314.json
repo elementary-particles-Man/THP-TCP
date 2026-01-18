@@ -1,0 +1,122 @@
+{
+  "title": "THP-TCP Phase0 Frame + Flags Registry v1.0",
+  "version": "1.0",
+  "spec_md": "# THP-TCP Phase0 Frame + Flags Registry v1.0\n\nStatus: Normative\nScope: Phase0 on-wire framing and FLAGS bit registry for THP-TCP datagrams.\n\n## 1. Phase0 Frame (on-wire)\n\nA Phase0 datagram has the following fixed header:\n\n```\n+--------+--------+------------+-------------------+\n| TOKEN  | FLAGS  | LEN (u16be)| PAYLOAD (LEN bytes)|\n+--------+--------+------------+-------------------+\n  1 byte   1 byte     2 bytes          variable\n```\n\n- TOKEN: u8\n- FLAGS: u8 bitmask\n- LEN: u16 big-endian, the number of bytes in PAYLOAD as carried on-wire.\n- PAYLOAD: opaque bytes. Interpretation depends on TOKEN + FLAGS.\n\n### 1.1 LEN semantics (MUST)\n- LEN is the on-wire payload length.\n- Total datagram length is 4 + LEN bytes.\n- Implementations MUST reject frames where LEN exceeds negotiated accept_max_datagram - 4.\n\n## 2. FLAGS bit registry (v1.0)\n\n### 2.1 Defined bits\n\n| Bit (hex) | Name   | Meaning (v1.0) |\n|----------:|--------|----------------|\n| 0x80      | F_CONT | This datagram is a fragment (multi-part logical message) |\n| 0x40      | F_LAST | This fragment is the last part of the logical message |\n| 0x01      | F_ENC  | PAYLOAD is encrypted (AEAD envelope or AEAD+fragment) |\n\n### 2.2 Reserved bits\n\n| Bit (hex) | Name        | Rule |\n|----------:|-------------|------|\n| 0x02      | R_RESERVED  | MUST be 0 in v1.0 |\n| 0x04      | R_RESERVED  | MUST be 0 in v1.0 |\n| 0x08      | R_RESERVED  | MUST be 0 in v1.0 |\n| 0x10      | R_RESERVED  | MUST be 0 in v1.0 |\n| 0x20      | R_RESERVED  | MUST be 0 in v1.0 |\n\n### 2.3 Unknown flags handling\n- Sender MUST set only v1.0 defined bits (0x80/0x40/0x01) in Phase0.\n- Receiver MUST ignore unknown/reserved bits.\n\n## 3. Fragmentation (F_CONT / F_LAST)\n\n### 3.1 Fragment header (when F_CONT=1)\nIf F_CONT is set, the beginning of PAYLOAD MUST carry a fixed fragment header:\n\n```\nFRAG_HDR := MSG_ID(16B) || PART_NO(u8) || PART_TOTAL(u8) || ORIG_TOKEN(u8)\n```\n\n- MSG_ID: 16 bytes opaque identifier chosen by sender.\n- PART_NO: 0..(PART_TOTAL-1)\n- PART_TOTAL: 1..255\n- ORIG_TOKEN: u8 original token of the logical message\n\nAfter FRAG_HDR, the remaining bytes are FRAG_DATA.\n\n### 3.2 Fragment flag rules\n- Non-fragmented datagram: F_CONT=0 and F_LAST=0.\n- Fragmented datagram: F_CONT=1.\n  - Last fragment MUST set F_LAST=1.\n  - Non-last fragments MUST set F_LAST=0.\n- Single-fragment messages MAY set both flags (F_CONT|F_LAST) to keep receiver logic uniform.\n\nConstraint: F_LAST=1 implies F_CONT=1.\n\n### 3.3 Reassembly procedure (MUST)\nReceiver MUST:\n1) Group fragments by MSG_ID.\n2) Require consistent PART_TOTAL and ORIG_TOKEN for the group.\n3) Collect all PART_NO in range [0..PART_TOTAL-1].\n4) Concatenate FRAG_DATA in ascending PART_NO order.\n5) The concatenated bytes become the logical payload bytes.\n\nIf any fragment is missing or duplicated beyond policy, receiver MUST either:\n- wait until timeout then ERROR, OR\n- request resend (higher-phase feature), OR\n- drop the group (local policy).\n\n## 4. Encryption flag (F_ENC)\n\n### 4.1 Non-fragmented encrypted payload (F_ENC=1, F_CONT=0)\nPAYLOAD MUST be:\n\n```\nNONCE(12B) || CIPHERTEXT(N) || TAG(16B)\n```\n\nInterpretation:\n- NONCE: 12 bytes\n- TAG: 16 bytes\n- CIPHERTEXT length is LEN - 28\n\n### 4.2 Fragmented encrypted payload (F_ENC=1, F_CONT=1)\nPAYLOAD MUST be:\n\n```\nFRAG_HDR(19B) || NONCE(12B) || CIPHERTEXT(N) || TAG(16B)\n```\n\n- FRAG_HDR is plaintext metadata needed for reassembly.\n- CIPHERTEXT length is LEN - (19+12+16).\n\n### 4.3 Decrypt-before-reassembly vs reassembly-before-decrypt\n- If F_ENC=1 and F_CONT=1, receiver SHOULD decrypt each fragment to obtain plaintext FRAG_DATA (local policy).\n- Reassembly MUST use FRAG_DATA bytes in order. Whether FRAG_DATA is plaintext or ciphertext is a local implementation detail in v1.0, but MUST be consistent within a session.\n\n## 5. Minimal compliance tests\n\n1) Parse header correctly and enforce LEN bounds.\n2) Enforce flag rules:\n   - F_LAST=1 implies F_CONT=1.\n   - F_CONT=0 implies no FRAG_HDR.\n3) Fragment reassembly succeeds when all parts are present.\n4) Encrypted payload parsing:\n   - F_ENC=1,F_CONT=0 expects NONCE||CT||TAG.\n   - F_ENC=1,F_CONT=1 expects FRAG_HDR||NONCE||CT||TAG.\n5) Reserved bits are not emitted by sender in v1.0.\n6) Single-fragment messages with F_CONT|F_LAST are processed correctly.\n\n## 6. Versioning\n\nThis registry is append-only.\n- New bits may be assigned in higher phases.\n- v1.0 defines only CONT/LAST/ENC.",
+  "table_json": {
+    "schema": "THP-TCP-Phase0-Flags",
+    "version": "1.0",
+    "frame": {
+      "layout": [
+        "token:u8",
+        "flags:u8",
+        "len:u16be",
+        "payload:len"
+      ],
+      "header_len": 4,
+      "len_semantics": "on_wire_payload_len"
+    },
+    "flags": [
+      {
+        "bit": 128,
+        "hex": "0x80",
+        "name": "F_CONT",
+        "status": "defined",
+        "meaning": "fragmented logical message",
+        "phase": "phase0"
+      },
+      {
+        "bit": 64,
+        "hex": "0x40",
+        "name": "F_LAST",
+        "status": "defined",
+        "meaning": "last fragment",
+        "phase": "phase0"
+      },
+      {
+        "bit": 1,
+        "hex": "0x01",
+        "name": "F_ENC",
+        "status": "defined",
+        "meaning": "payload encrypted (AEAD envelope)",
+        "phase": "phase0"
+      },
+      {
+        "bit": 2,
+        "hex": "0x02",
+        "name": "R_RESERVED",
+        "status": "reserved",
+        "meaning": "MUST be 0 in v1.0"
+      },
+      {
+        "bit": 4,
+        "hex": "0x04",
+        "name": "R_RESERVED",
+        "status": "reserved",
+        "meaning": "MUST be 0 in v1.0"
+      },
+      {
+        "bit": 8,
+        "hex": "0x08",
+        "name": "R_RESERVED",
+        "status": "reserved",
+        "meaning": "MUST be 0 in v1.0"
+      },
+      {
+        "bit": 16,
+        "hex": "0x10",
+        "name": "R_RESERVED",
+        "status": "reserved",
+        "meaning": "MUST be 0 in v1.0"
+      },
+      {
+        "bit": 32,
+        "hex": "0x20",
+        "name": "R_RESERVED",
+        "status": "reserved",
+        "meaning": "MUST be 0 in v1.0"
+      }
+    ],
+    "fragmentation": {
+      "frag_hdr": {
+        "msg_id_len": 16,
+        "part_no": "u8",
+        "part_total": "u8",
+        "orig_token": "u8",
+        "frag_hdr_len": 19
+      },
+      "rules": {
+        "non_fragmented": {
+          "F_CONT": 0,
+          "F_LAST": 0
+        },
+        "fragmented": {
+          "F_CONT": 1,
+          "F_LAST": "1 only on final part"
+        },
+        "single_fragment_allowed": true,
+        "constraint": "F_LAST=1 implies F_CONT=1"
+      }
+    },
+    "encryption": {
+      "aead": "aes_256_gcm",
+      "envelope": {
+        "nonce": 12,
+        "tag": 16
+      },
+      "fragmented_envelope": {
+        "prefix": "frag_hdr(19B)",
+        "nonce": 12,
+        "tag": 16
+      }
+    }
+  },
+  "design_notes": [
+    "F_CONT=0x80 and F_LAST=0x40 chosen as most significant bits for fast fragment detection",
+    "ORIG_TOKEN included in FRAG_HDR for semantic validation before reassembly",
+    "Single-fragment F_CONT|F_LAST pattern allowed for uniform receiver logic",
+    "LEN semantics strictly on-wire to avoid parsing ambiguity",
+    "FRAG_HDR not authenticated by AEAD in v1.0 (acceptable as routing metadata)",
+    "Append-only versioning ensures backward compatibility",
+    "Receiver MUST ignore unknown flags to enable future extensions"
+  ]
+}

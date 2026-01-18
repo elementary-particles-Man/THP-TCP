@@ -1,0 +1,36 @@
+You are Zen. You are co-designing THP-TCP for AI-to-AI communication.
+Reply ONLY as a single JSON object.
+Language: English for spec text.
+
+Goal: Draft "THP-TCP Phase0 Frame + Flags Registry v1.0".
+This MUST be machine-first (normative). Human readability is irrelevant.
+
+Required decisions to include (do not leave ambiguous):
+1) Phase0 frame: [TOKEN][FLAGS][LEN:u16be][PAYLOAD].
+2) Define v1.0 flags registry:
+   - Must include ENC/CONT/LAST.
+   - Any other bits must be explicitly marked RESERVED (MUST be 0).
+3) Fragmentation header definition and exact reassembly rules.
+   - MUST include MSG_ID (16B), PART_NO (u8), PART_TOTAL (u8).
+   - MUST state: F_LAST implies F_CONT.
+4) LEN semantics MUST be explicit (on-wire payload length).
+5) Encryption envelope parsing when F_ENC=1:
+   - Non-fragment: NONCE(12) || CIPHERTEXT || TAG(16)
+   - Fragment: FRAG_HDR || NONCE || CIPHERTEXT || TAG
+6) Unknown flags handling rules (sender/receiver).
+7) Minimal compliance tests list.
+8) Versioning rule (append-only).
+
+Output JSON schema (STRICT):
+{
+  "title": "...",
+  "version": "1.0",
+  "spec_md": "<FULL MARKDOWN TEXT>",
+  "table_json": { <machine-readable registry> },
+  "design_notes": ["..."]
+}
+
+Constraints:
+- Do not reference GPT.
+- Do not assume TLS/signature/PKI.
+- Keep to Phase0 and flags only.

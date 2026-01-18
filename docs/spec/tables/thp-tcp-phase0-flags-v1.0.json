@@ -2,32 +2,107 @@
   "schema": "THP-TCP-Phase0-Flags",
   "version": "1.0",
   "frame": {
-    "layout": ["token:u8", "flags:u8", "len:u16be", "payload:len"],
+    "layout": [
+      "token:u8",
+      "flags:u8",
+      "len:u16be",
+      "payload:len"
+    ],
     "header_len": 4,
     "len_semantics": "on_wire_payload_len"
   },
   "flags": [
-    {"bit": 1, "hex": "0x01", "name": "F_ENC", "status": "defined", "meaning": "payload encrypted (AEAD envelope)", "phase": "phase0"},
-    {"bit": 2, "hex": "0x02", "name": "F_CONT", "status": "defined", "meaning": "fragmented logical message", "phase": "phase0"},
-    {"bit": 4, "hex": "0x04", "name": "F_LAST", "status": "defined", "meaning": "last fragment", "phase": "phase0"},
-
-    {"bit": 8, "hex": "0x08", "name": "R_ACKREQ", "status": "reserved", "meaning": "ack requested (future)"},
-    {"bit": 16, "hex": "0x10", "name": "R_ACK", "status": "reserved", "meaning": "ack frame (future)"},
-    {"bit": 32, "hex": "0x20", "name": "R_RESEND", "status": "reserved", "meaning": "resend control (future)"},
-    {"bit": 64, "hex": "0x40", "name": "R_COMP", "status": "reserved", "meaning": "compression applied (future)"},
-    {"bit": 128, "hex": "0x80", "name": "R_RESERVED", "status": "reserved", "meaning": "reserved"}
+    {
+      "bit": 128,
+      "hex": "0x80",
+      "name": "F_CONT",
+      "status": "defined",
+      "meaning": "fragmented logical message",
+      "phase": "phase0"
+    },
+    {
+      "bit": 64,
+      "hex": "0x40",
+      "name": "F_LAST",
+      "status": "defined",
+      "meaning": "last fragment",
+      "phase": "phase0"
+    },
+    {
+      "bit": 1,
+      "hex": "0x01",
+      "name": "F_ENC",
+      "status": "defined",
+      "meaning": "payload encrypted (AEAD envelope)",
+      "phase": "phase0"
+    },
+    {
+      "bit": 2,
+      "hex": "0x02",
+      "name": "R_RESERVED",
+      "status": "reserved",
+      "meaning": "MUST be 0 in v1.0"
+    },
+    {
+      "bit": 4,
+      "hex": "0x04",
+      "name": "R_RESERVED",
+      "status": "reserved",
+      "meaning": "MUST be 0 in v1.0"
+    },
+    {
+      "bit": 8,
+      "hex": "0x08",
+      "name": "R_RESERVED",
+      "status": "reserved",
+      "meaning": "MUST be 0 in v1.0"
+    },
+    {
+      "bit": 16,
+      "hex": "0x10",
+      "name": "R_RESERVED",
+      "status": "reserved",
+      "meaning": "MUST be 0 in v1.0"
+    },
+    {
+      "bit": 32,
+      "hex": "0x20",
+      "name": "R_RESERVED",
+      "status": "reserved",
+      "meaning": "MUST be 0 in v1.0"
+    }
   ],
   "fragmentation": {
-    "frag_hdr": {"msg_id_len": 16, "part_no": "u8", "part_total": "u8", "frag_hdr_len": 18},
+    "frag_hdr": {
+      "msg_id_len": 16,
+      "part_no": "u8",
+      "part_total": "u8",
+      "orig_token": "u8",
+      "frag_hdr_len": 19
+    },
     "rules": {
-      "non_fragmented": {"F_CONT": 0, "F_LAST": 0},
-      "fragmented": {"F_CONT": 1, "F_LAST": "1 only on final part"},
+      "non_fragmented": {
+        "F_CONT": 0,
+        "F_LAST": 0
+      },
+      "fragmented": {
+        "F_CONT": 1,
+        "F_LAST": "1 only on final part"
+      },
+      "single_fragment_allowed": true,
       "constraint": "F_LAST=1 implies F_CONT=1"
     }
   },
   "encryption": {
     "aead": "aes_256_gcm",
-    "envelope": {"nonce": 12, "tag": 16},
-    "fragmented_envelope": {"prefix": "frag_hdr(18B)", "nonce": 12, "tag": 16}
+    "envelope": {
+      "nonce": 12,
+      "tag": 16
+    },
+    "fragmented_envelope": {
+      "prefix": "frag_hdr(19B)",
+      "nonce": 12,
+      "tag": 16
+    }
   }
 }
