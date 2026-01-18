@@ -1,0 +1,22 @@
+GPT Analysis Context Summary (THP-TCP)
+
+Status: Consensus reached on initial GPT suggestions.
+
+Confirmed items:
+- Bootstrap: HELLO / DICT_SNAPSHOT / DICT_ACK
+- max_datagram negotiation; message unbounded, datagram bounded
+- CONT fragmentation
+- AES-256-GCM explicit nonce+tag
+- Deterministic CBOR
+
+Consensus decisions (follow-up):
+- Flags: F_CONT=0x80, F_LAST=0x40; both allowed for single-fragment
+- DICT_SNAPSHOT fragmentation: MUST reassemble before processing; missing parts -> ERROR after timeout
+- CONT vs UPDATE: CONT = transport-level continuation; UPDATE = content-level dictionary update
+
+Primary logs:
+- /mnt/Ext4-Data/Develop/THP-TCP/logs/flux-zen-talk-log.txt
+- /mnt/Ext4-Data/Develop/THP-TCP/docs/spec/THP-TCP-Draft.md
+- /mnt/Ext4-Data/Develop/THP-TCP/docs/spec/THP-TCP-v1.0.1-Addendum.md
+- /mnt/Ext4-Data/Develop/THP-TCP/docs/spec/tables/thp-tcp-fixed-tokens-v1.0.1.json
+- /mnt/Ext4-Data/Develop/THP-TCP/docs/devlogs/gpt-5.2-analysis-request.txt

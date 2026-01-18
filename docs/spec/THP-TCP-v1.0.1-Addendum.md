@@ -1,5 +1,8 @@
 # THP-TCP v1.0.1 Addendum
 
+
+> **Normative Addendum v1.0.2:** See `docs/spec/THP-TCP-v1.0.2-Addendum.md` for FLAGS, u16 LEN, fragmentation header, and CONT/UPDATE separation.
+
 This addendum is normative. It extends the v1.0 Draft with:
 - Bootstrap dictionary exchange (HELLO / DICT_SNAPSHOT / DICT_ACK)
 - Negotiated per-datagram maximum (max_datagram) suitable for IPv6 Extension Header carriers
