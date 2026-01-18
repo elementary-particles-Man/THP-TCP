@@ -31,6 +31,8 @@ Human readability is **not** a priority for the *wire/log format*. Humans should
 ---
 
 ## Specs (single source of truth)
+- Nickname Addressing: `docs/spec/THP-TCP-Nickname-Addressing-v1.0.md`
+  - Table: `docs/spec/tables/thp-tcp-nickname-fields-v1.0.json`
 
 - Draft baseline:
   - `docs/spec/THP-TCP-Draft.md`
