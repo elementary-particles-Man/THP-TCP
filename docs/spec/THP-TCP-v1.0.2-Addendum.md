@@ -1,6 +1,9 @@
 # THP-TCP v1.0.2 Addendum
 
 
+> **Normative CBOR Field Tables:** See `docs/spec/THP-TCP-CBOR-FieldTables-v1.0.md` and `docs/spec/tables/thp-tcp-cbor-fields-v1.0.json` for required/optional keys, unknown-key policy, and key space ranges.
+
+
 > **Normative Crypto Assumptions:** See `docs/spec/THP-TCP-AESGCM-KeyMgmt-v1.0.md` for X25519/HKDF/AES-GCM session key assumptions, nonce rules, and AAD.
 
 This addendum is normative. It refines v1.0 / v1.0.1 with a minimal, non-breaking clarification for fragmentation flags, frame layout, and CONT vs UPDATE semantics.

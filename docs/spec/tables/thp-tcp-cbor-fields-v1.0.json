@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "common": {
+    "deterministic_cbor": true,
+    "indefinite_length": false,
+    "unknown_key_policy": "ignore",
+    "critical_keys_exception": true,
+    "required_policy": "missing_required_or_type_mismatch_is_error",
+    "optional_default_policy": "use_default_if_defined",
+    "key_space": {
+      "0-63": "core",
+      "64-127": "optional_may_be_required_if_marked",
+      "128-191": "reserved",
+      "192-255": "experimental",
+      "256-511": "vendor",
+      "512+": "private"
+    }
+  },
+  "tokens": {
+    "0x01": {
+      "name": "HELLO",
+      "fields": {
+        "0": {"name": "proto_ver", "type": "uint", "required": true},
+        "1": {"name": "token_table_ver", "type": "uint", "required": true},
+        "2": {"name": "context_id", "type": "uint", "required": true},
+        "3": {"name": "dict_hash", "type": "bytes", "required": true},
+        "4": {"name": "max_datagram", "type": "uint", "required": true},
+        "5": {"name": "enc_suite", "type": "uint", "required": true, "default": 1},
+        "6": {"name": "cbor_mode", "type": "uint", "required": true, "default": 1},
+        "7": {"name": "kx_pub", "type": "bytes", "required": true},
+        "8": {"name": "kx_mode", "type": "uint", "required": true, "default": 1},
+        "9": {"name": "kdf_mode", "type": "uint", "required": true, "default": 1},
+        "10": {"name": "aead_mode", "type": "uint", "required": true, "default": 1},
+        "64": {"name": "key_id_hint", "type": "bytes", "required": false}
+      }
+    },
+    "0x02": {
+      "name": "HELLO_ACK",
+      "fields": {
+        "7": {"name": "kx_pub", "type": "bytes", "required": true},
+        "64": {"name": "accept_max_datagram", "type": "uint", "required": true},
+        "65": {"name": "accept_crypto", "type": "uint", "required": true, "default": 1}
+      }
+    },
+    "0x03": {
+      "name": "DICT_SNAPSHOT",
+      "fields": {
+        "0": {"name": "context_id", "type": "uint", "required": true},
+        "1": {"name": "dict_seq", "type": "uint", "required": true},
+        "2": {"name": "dict_total", "type": "uint", "required": true},
+        "3": {"name": "dict_chunk", "type": "bytes", "required": true}
+      }
+    },
+    "0x04": {
+      "name": "DICT_ACK",
+      "fields": {
+        "0": {"name": "context_id", "type": "uint", "required": true},
+        "1": {"name": "dict_hash", "type": "bytes", "required": true},
+        "2": {"name": "status", "type": "uint", "required": true}
+      }
+    },
+    "0x05": {
+      "name": "UPGRADE",
+      "fields": {
+        "0": {"name": "target_version", "type": "uint", "required": true},
+        "1": {"name": "reason", "type": "uint", "required": false, "default": 0}
+      }
+    },
+    "0x06": {
+      "name": "ERROR",
+      "fields": {
+        "0": {"name": "reason", "type": "uint", "required": true},
+        "1": {"name": "detail", "type": "text_or_bytes", "required": false},
+        "2": {"name": "critical_keys", "type": "array<uint>", "required": false}
+      }
+    }
+  }
+}

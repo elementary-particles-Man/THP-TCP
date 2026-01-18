@@ -730,3 +730,27 @@
     "focus": ["transcript", "nonce format", "AAD fields"]
   }
 }
+
+[Zen]
+{
+  "review": "CBOR field tables v1.0",
+  "status": "NG",
+  "corrections": [
+    "Move key_id_hint to optional range (64-127)",
+    "Move accept_max_datagram/accept_crypto to optional range or mark required explicitly",
+    "Clarify >=256 key space boundary"
+  ]
+}
+
+[System]
+{
+  "cbortables_v1": {
+    "status": "corrected",
+    "changes": [
+      "key_id_hint -> 64",
+      "accept_max_datagram -> 64, accept_crypto -> 65 (required)",
+      "key space split: 256-511 vendor, 512+ private",
+      "optional-range required-by-table allowed"
+    ]
+  }
+}
