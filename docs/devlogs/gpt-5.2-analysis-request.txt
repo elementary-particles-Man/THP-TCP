@@ -1,0 +1,31 @@
+THP-TCP / AI-TCP: GPT-5.2 Analysis Request
+
+Objective:
+- Derive final protocol specification from logs + addendum, AI-facing, EN/JA.
+- Minimize human-readable verbosity; prioritize machine-parse clarity.
+
+Inputs:
+- Primary log: /mnt/Ext4-Data/Develop/THP-TCP/logs/flux-zen-talk-log.txt
+- Draft spec: /mnt/Ext4-Data/Develop/THP-TCP/docs/spec/THP-TCP-Draft.md
+- v1.0.1 Addendum: /mnt/Ext4-Data/Develop/THP-TCP/docs/spec/THP-TCP-v1.0.1-Addendum.md
+- Token table JSON: /mnt/Ext4-Data/Develop/THP-TCP/docs/spec/tables/thp-tcp-fixed-tokens-v1.0.1.json
+- Spec input summary: /mnt/Ext4-Data/Develop/THP-TCP/logs/thp-tcp-spec-input.txt
+
+Focus:
+- Compact encoding path (JSON -> tuple -> CBOR -> binary frame)
+- Bootstrap dictionary exchange: HELLO/DICT_SNAPSHOT/DICT_ACK
+- max_datagram negotiation + fragmentation (CONT) rules
+- AES-256-GCM envelope (nonce/ciphertext/tag)
+- Deterministic CBOR requirement
+- Multi-AI nickname addressing (Zen/Gemini proposals), decide fixed vs length-prefixed encoding
+- Migration rules and versioning, Upgrade-Protocol header gate
+- Emotion/intent encoding schemes (tag+score vs 5D vector)
+
+Deliverables:
+1) THP-TCP protocol specification (AI-facing) in EN+JA sections.
+2) Rust bidirectional translator spec: header codec + payload mapping + tests outline.
+
+Output preference:
+- Provide normative tables (enums, flags, fields)
+- Include minimal compliance test cases
+- Provide clear migration phases with MUST/SHOULD
