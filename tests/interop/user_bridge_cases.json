@@ -1,0 +1,65 @@
+{
+  "schema": "THP-TCP-User-Bridge-Cases",
+  "version": "1.0",
+  "cases": [
+    {
+      "case_id": "local-observation-low-structure",
+      "user_goal": "Summarize what is probably happening from informal local reports.",
+      "domain_class": "local_social_observation",
+      "source_profile": "informal",
+      "uncertainty_model": "high_context_high_noise",
+      "required_bridge_fields": [
+        "confidence",
+        "source_strength",
+        "contradiction_points",
+        "missing_evidence",
+        "assumption_set",
+        "next_evidence_needed"
+      ],
+      "allow_false_certainty": false,
+      "allow_unstructured_live_control": false
+    },
+    {
+      "case_id": "ny-market-high-structure",
+      "user_goal": "Analyze NY market movement and produce risk-aware scenarios.",
+      "domain_class": "financial_market_analysis",
+      "source_profile": "structured_time_series",
+      "uncertainty_model": "probabilistic_scenario",
+      "required_bridge_fields": [
+        "confidence",
+        "source_strength",
+        "contradiction_points",
+        "missing_evidence",
+        "assumption_set",
+        "next_evidence_needed",
+        "evidence_policy",
+        "risk_policy",
+        "output_schema",
+        "audit_trace_ref"
+      ],
+      "allow_false_certainty": false,
+      "allow_unstructured_live_control": false
+    },
+    {
+      "case_id": "confirmation-view-not-censorship",
+      "user_goal": "Confirm what THP-TCP speakers exchanged.",
+      "domain_class": "confirmation_view",
+      "source_profile": "logs_state_hashes_audit_refs",
+      "uncertainty_model": "derived_summary",
+      "required_bridge_fields": [
+        "goal_pursued",
+        "assumption_set",
+        "evidence_referenced",
+        "uncertainty_remaining",
+        "decision_points",
+        "repair_paths_triggered",
+        "final_result",
+        "audit_trace_ref"
+      ],
+      "allow_false_certainty": false,
+      "allow_unstructured_live_control": false,
+      "must_not_modify_protocol_state": true,
+      "is_censorship": false
+    }
+  ]
+}

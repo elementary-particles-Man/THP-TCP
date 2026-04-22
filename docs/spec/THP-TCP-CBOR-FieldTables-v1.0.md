@@ -82,6 +82,53 @@
 | 1 | detail | text/bytes | O | — | optional text or bytes |
 | 2 | critical_keys | array<uint> | O | — | if unknown → reject |
 
+### 2.7 READ_THIS (0x08)
+| key | name | type | req | default | note |
+|---:|---|---|:--:|---|---|
+| 0 | spec_uri | text | M | — | canonical spec reference |
+| 1 | spec_hash | bytes | M | — | expected spec digest |
+| 2 | token_table_uri | text | M | — | fixed token table reference |
+| 3 | token_table_hash | bytes | M | — | expected token table digest |
+| 4 | cbor_table_uri | text | M | — | CBOR field table reference |
+| 5 | cbor_table_hash | bytes | M | — | expected CBOR table digest |
+| 6 | minimal_decoder_uri | text | O | — | decoder reference |
+| 7 | minimal_decoder | bytes | O | — | inline decoder bytes |
+| 8 | required_ack_hash | bytes | M | — | proof target for admission |
+
+### 2.8 SYNC_REQUEST (0x09)
+| key | name | type | req | default | note |
+|---:|---|---|:--:|---|---|
+| 0 | current_proto_ver | uint | M | — | peer version |
+| 1 | current_spec_hash | bytes | M | — | peer spec digest |
+| 2 | current_dict_hash | bytes | M | — | peer dictionary digest |
+| 3 | wanted_proto_ver | uint | O | — | requested target |
+
+### 2.9 SYNC_DELTA (0x0A)
+| key | name | type | req | default | note |
+|---:|---|---|:--:|---|---|
+| 0 | from_spec_hash | bytes | M | — | baseline digest |
+| 1 | to_spec_hash | bytes | M | — | target digest |
+| 2 | token_delta | bytes | O | — | append-only token delta |
+| 3 | dict_delta | bytes | O | — | dictionary delta |
+| 4 | field_delta | bytes | O | — | CBOR field delta |
+| 5 | required_ack_hash | bytes | M | — | proof target for LIVE admission |
+
+### 2.10 LIVE_STATE_DELTA (0x0B)
+| key | name | type | req | default | note |
+|---:|---|---|:--:|---|---|
+| 0 | state_id | bytes | M | — | shared semantic state id |
+| 1 | delta_seq | uint | M | — | monotonic delta sequence |
+| 2 | intent | uint | O | — | task/control intent |
+| 3 | confidence | uint | O | — | 0..255 recommended |
+| 4 | urgency | uint | O | — | 0..255 recommended |
+| 5 | risk | uint | O | — | 0..255 recommended |
+| 6 | affect | bytes | O | — | model-neutral affect vector |
+| 7 | contradiction_pressure | uint | O | — | 0..255 recommended |
+| 8 | novelty | uint | O | — | 0..255 recommended |
+| 9 | trust_delta | int | O | — | signed trust movement |
+| 10 | repair_request | uint | O | — | ask for specific repair |
+| 11 | domain_payload | bytes | O | — | task-local payload |
+
 ---
 
 ## 3. Deterministic CBOR Constraints

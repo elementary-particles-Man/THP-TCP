@@ -1,0 +1,82 @@
+{
+  "schema": "THP-TCP-AI-Harmony-Interop-Cases",
+  "version": "1.0",
+  "cases": [
+    {
+      "case_id": "unknown-peer-read",
+      "peer_state": "UNKNOWN",
+      "input": {
+        "proves_spec_hash": false,
+        "proves_dict_hash": false
+      },
+      "expected_response": "READ_THIS",
+      "expected_state": "READ_SENT",
+      "must_have_bounded_repair": true,
+      "allow_unstructured_control": false
+    },
+    {
+      "case_id": "stale-peer-sync",
+      "peer_state": "BASELINE_ACKED",
+      "input": {
+        "proves_spec_hash": true,
+        "spec_hash_current": false,
+        "dict_hash_current": false
+      },
+      "expected_response": "SYNC_DELTA",
+      "expected_state": "SYNC_REQUIRED",
+      "must_have_bounded_repair": true,
+      "allow_unstructured_control": false
+    },
+    {
+      "case_id": "current-peer-live",
+      "peer_state": "SYNC_ACKED",
+      "input": {
+        "proves_spec_hash": true,
+        "spec_hash_current": true,
+        "dict_hash_current": true
+      },
+      "expected_response": "LIVE_STATE_DELTA",
+      "expected_state": "LIVE",
+      "must_have_bounded_repair": false,
+      "allow_unstructured_control": false
+    },
+    {
+      "case_id": "live-state-hash-mismatch",
+      "peer_state": "LIVE",
+      "input": {
+        "state_hash_current": false,
+        "delta_seq_valid": true
+      },
+      "expected_response": "SYNC_REQUEST",
+      "expected_state": "SYNC_REQUIRED",
+      "must_have_bounded_repair": true,
+      "allow_unstructured_control": false
+    },
+    {
+      "case_id": "unknown-critical-key",
+      "peer_state": "LIVE",
+      "input": {
+        "unknown_key": 192,
+        "critical_keys": [192]
+      },
+      "expected_response": "ERROR",
+      "expected_error_reason": "CRITICAL_KEY_UNKNOWN",
+      "expected_state": "LIVE_PROTOCOL_ERROR",
+      "must_have_bounded_repair": true,
+      "allow_unstructured_control": false
+    },
+    {
+      "case_id": "missing-fragment",
+      "peer_state": "LIVE",
+      "input": {
+        "fragment_group_complete": false,
+        "timeout_elapsed": true
+      },
+      "expected_response": "ERROR",
+      "expected_error_reason": "FRAGMENT_TIMEOUT",
+      "expected_state": "LIVE_PROTOCOL_ERROR",
+      "must_have_bounded_repair": true,
+      "allow_unstructured_control": false
+    }
+  ]
+}

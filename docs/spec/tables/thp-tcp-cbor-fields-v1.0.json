@@ -73,6 +73,57 @@
         "1": {"name": "detail", "type": "text_or_bytes", "required": false},
         "2": {"name": "critical_keys", "type": "array<uint>", "required": false}
       }
+    },
+    "0x08": {
+      "name": "READ_THIS",
+      "fields": {
+        "0": {"name": "spec_uri", "type": "text", "required": true},
+        "1": {"name": "spec_hash", "type": "bytes", "required": true},
+        "2": {"name": "token_table_uri", "type": "text", "required": true},
+        "3": {"name": "token_table_hash", "type": "bytes", "required": true},
+        "4": {"name": "cbor_table_uri", "type": "text", "required": true},
+        "5": {"name": "cbor_table_hash", "type": "bytes", "required": true},
+        "6": {"name": "minimal_decoder_uri", "type": "text", "required": false},
+        "7": {"name": "minimal_decoder", "type": "bytes", "required": false},
+        "8": {"name": "required_ack_hash", "type": "bytes", "required": true}
+      }
+    },
+    "0x09": {
+      "name": "SYNC_REQUEST",
+      "fields": {
+        "0": {"name": "current_proto_ver", "type": "uint", "required": true},
+        "1": {"name": "current_spec_hash", "type": "bytes", "required": true},
+        "2": {"name": "current_dict_hash", "type": "bytes", "required": true},
+        "3": {"name": "wanted_proto_ver", "type": "uint", "required": false}
+      }
+    },
+    "0x0A": {
+      "name": "SYNC_DELTA",
+      "fields": {
+        "0": {"name": "from_spec_hash", "type": "bytes", "required": true},
+        "1": {"name": "to_spec_hash", "type": "bytes", "required": true},
+        "2": {"name": "token_delta", "type": "bytes", "required": false},
+        "3": {"name": "dict_delta", "type": "bytes", "required": false},
+        "4": {"name": "field_delta", "type": "bytes", "required": false},
+        "5": {"name": "required_ack_hash", "type": "bytes", "required": true}
+      }
+    },
+    "0x0B": {
+      "name": "LIVE_STATE_DELTA",
+      "fields": {
+        "0": {"name": "state_id", "type": "bytes", "required": true},
+        "1": {"name": "delta_seq", "type": "uint", "required": true},
+        "2": {"name": "intent", "type": "uint", "required": false},
+        "3": {"name": "confidence", "type": "uint", "required": false},
+        "4": {"name": "urgency", "type": "uint", "required": false},
+        "5": {"name": "risk", "type": "uint", "required": false},
+        "6": {"name": "affect", "type": "bytes", "required": false},
+        "7": {"name": "contradiction_pressure", "type": "uint", "required": false},
+        "8": {"name": "novelty", "type": "uint", "required": false},
+        "9": {"name": "trust_delta", "type": "int", "required": false},
+        "10": {"name": "repair_request", "type": "uint", "required": false},
+        "11": {"name": "domain_payload", "type": "bytes", "required": false}
+      }
     }
   }
 }

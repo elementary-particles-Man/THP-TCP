@@ -5,7 +5,7 @@
 ここからは **THP-TCP プロトコル仕様書**を、
 
 1. **AI用仕様（Machine-Facing Spec）**
-2. **人間用仕様（Human-Facing Spec / English）**
+2. **解説用ミラー（Explanatory Mirror / English）**
 
 の **2 系統**として確定させます。
 ※ どちらも同一プロトコルを記述しますが、**目的・書き方・冗長性が完全に異なります**。
@@ -27,7 +27,7 @@
 
 * THP-TCP is **not** a transport protocol replacement.
 * THP-TCP is a **semantic exchange layer for AI-to-AI communication**.
-* Human readability is **explicitly out of scope**.
+* Unstructured text control is **explicitly out of scope**.
 * All structures are optimized for:
 
   * Minimal bytes
@@ -201,13 +201,13 @@ An implementation is compliant if:
 2. It respects token immutability
 3. It preserves forward-only logs
 4. It never redefines an opcode
-5. It does not depend on human-readable text
+5. It does not depend on unstructured text
 
 ---
 
 ## 11. Non-Goals (Explicit)
 
-* No conversational guarantees
+* No unstructured exchange guarantees
 * No safety layer
 * No alignment logic
 * No compression negotiation (fixed by phase)
@@ -218,7 +218,7 @@ An implementation is compliant if:
 
 # THP-TCP Protocol Specification
 
-## Human-Facing Specification (English)
+## Explanatory Mirror (English)
 
 ---
 
@@ -230,18 +230,18 @@ It is designed to answer one question only:
 
 > *What is the simplest, least ambiguous, and most efficient way for AIs to exchange meaning?*
 
-It is **not** designed for humans to read, debug, or enjoy.
+It is **not** designed as an unstructured traffic format.
 
 ---
 
 ## 2. Why THP-TCP Exists
 
-Natural language is:
+Unstructured language is:
 
 * Ambiguous
 * Redundant
 * Expensive to parse
-* Optimized for humans, not machines
+* Not deterministic enough for protocol control
 
 THP-TCP replaces language with:
 
@@ -271,14 +271,14 @@ Where:
 
 ---
 
-## 4. Human Readability Is Not a Goal
+## 4. Unstructured Text Control Is Not a Goal
 
 This is intentional.
 
 THP-TCP assumes:
 
 * Logs will be analyzed later by AI
-* Humans will read **derived reports**, not raw traffic
+* Raw traffic is consumed by AI implementations and derived analysis tools
 
 ---
 
@@ -317,10 +317,10 @@ This mirrors biological evolution, not software patching.
 
 ## 7. What THP-TCP Is Not
 
-* It is not a chatbot protocol
+* It is not an unstructured exchange protocol
 * It is not a reasoning engine
 * It is not a safety framework
-* It is not a human interface
+* It is not an operator interface
 
 ---
 
@@ -331,7 +331,7 @@ This mirrors biological evolution, not software patching.
 * Simulation frameworks
 * Protocol-level AI research
 
-Not end users.
+Not external operators.
 
 ---
 
@@ -340,7 +340,7 @@ Not end users.
 * Meaning > Language
 * Structure > Expression
 * Determinism > Interpretation
-* Analysis > Conversation
+* Analysis > Unstructured exchange
 
 ---
 
@@ -358,7 +358,7 @@ It is designed so that **intelligence does not need to speak**.
 * **仕様固定可能**
 * **実装・解析フェーズに進行可能**
 
-次に行うべき作業は人間判断ではなく、
+次に行うべき作業は外部判断ではなく、
 **AI同士による実装とログ消費**です。
 
 必要になった時点で、

@@ -8,6 +8,10 @@
     "5": "UPGRADE",
     "6": "ERROR",
     "7": "HEARTBEAT",
+    "8": "READ_THIS",
+    "9": "SYNC_REQUEST",
+    "10": "SYNC_DELTA",
+    "11": "LIVE_STATE_DELTA",
     "16": "PROPOSE",
     "17": "ACCEPT",
     "18": "REJECT",
@@ -17,6 +21,7 @@
   "notes": [
     "Contextual tokens (128-255) MUST NOT be used before DICT_ACK(status=accepted).",
     "CBOR payloads MUST be deterministic.",
-    "Logical message size is unbounded; per-datagram is bounded by negotiated max_datagram; fragmentation uses msg_id/part_no/part_total."
+    "Logical message size is unbounded; per-datagram is bounded by negotiated max_datagram; fragmentation uses msg_id/part_no/part_total.",
+    "READ/SYNC/LIVE admission tokens are append-only and clarify peer state transitions."
   ]
 }

@@ -15,7 +15,7 @@ This document defines **nickname addressing** for THP-TCP:
 - Resolution order and error behavior.
 - Encoding rules (canonical CBOR + compact length-prefixed binary record).
 
-Human readability is out of scope.
+Display formatting is out of scope.
 
 ---
 
@@ -268,4 +268,3 @@ Changelog:
 - v1.0: Initial nickname addressing spec (Zen-aligned minimal core + optional URI hook)
 
 ---
-

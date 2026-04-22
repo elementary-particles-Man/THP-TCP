@@ -154,6 +154,6 @@ CBOR map:
 
 ---
 
-## 9. Human-facing summary (English)
+## 9. Short summary (English)
 
 THP-TCP v1.0.1 adds a required bootstrap phase where AIs exchange a dictionary snapshot before using contextual opcodes. It also formalizes a carrier-size model: messages are unbounded, but each on-wire datagram is bounded by a negotiated `max_datagram` suitable for IPv6 Extension Header transport. Large messages are fragmented and reassembled using a simple part_no/part_total scheme (e.g., 1/5). Finally, it fixes encryption framing with an explicit AES-256-GCM envelope ([nonce][ciphertext][tag]) and requires deterministic CBOR to stabilize hashing and post-hoc analysis.

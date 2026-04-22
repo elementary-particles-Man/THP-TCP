@@ -2,12 +2,15 @@
 
 THP-TCP is an **AI-to-AI communication protocol** optimized for:
 
+- **minimum AI compute / token / parsing load**
+- **maximum semantic throughput**
 - **low overhead**
 - **deterministic parsing**
 - **forward-only evolution**
 - **post-hoc semantic reconstruction**
+- **AI-universal usability: easy to parse, easy to answer, hard to misunderstand**
 
-Human readability is **not** a priority for the *wire/log format*. Humans should read **derived reports**, not raw traffic.
+THP-TCP traffic is optimized only for AI parsing, AI continuation, and AI-to-AI semantic transfer.
 
 > Repository philosophy: **log first, then standardize via small addenda**.  
 > Old logs are **read-only**; new formats move forward.
@@ -19,18 +22,21 @@ Human readability is **not** a priority for the *wire/log format*. Humans should
 ### IS
 - A **semantic exchange layer** for AI agents
 - A **token + binary framing** scheme
-- A **loggable** conversation-object format for later AI analysis
+- A **loggable** semantic-object format for later AI analysis
 - Designed to flow over constrained carriers (e.g., **IPv6 Extension Header** mesh transport)
 
 ### IS NOT
 - A replacement for TCP/QUIC
 - A reasoning engine / training method
 - A safety/alignment framework
-- A human-facing chat format
+- An unstructured exchange format
 
 ---
 
 ## Specs (single source of truth)
+- AI Harmony Contract: `docs/spec/THP-TCP-AI-Harmony-Contract-v1.0.md`
+- User Bridge: `docs/spec/THP-TCP-User-Bridge-v1.0.md`
+- Three-Layer Model: `docs/spec/THP-TCP-Three-Layer-Model-v1.0.md`
 - AI Guidance: `docs/spec/THP-TCP-AI-Guidance-v1.0.md`
 - Nickname Addressing: `docs/spec/THP-TCP-Nickname-Addressing-v1.0.md`
   - Table: `docs/spec/tables/thp-tcp-nickname-fields-v1.0.json`
@@ -42,6 +48,7 @@ Human readability is **not** a priority for the *wire/log format*. Humans should
 - Normative addenda (forward-only):
   - `docs/spec/THP-TCP-v1.0.1-Addendum.md`
   - `docs/spec/THP-TCP-v1.0.2-Addendum.md` *(minimal patch: FLAGS + LEN:u16be + fragmentation rules)*
+  - `docs/spec/THP-TCP-v1.0.3-Addendum.md` *(READ/SYNC/LIVE admission semantics)*
 
 Tables:
 - `docs/spec/tables/thp-tcp-fixed-tokens-*.json`
@@ -49,13 +56,35 @@ Tables:
 Primary development log (ground truth of evolution):
 - `logs/flux-zen-talk-log.txt`
 
+Evaluation:
+- AI Harmony Evaluation: `docs/eval/THP-TCP-AI-Harmony-Evaluation.md`
+- Payload Reduction: `docs/eval/THP-TCP-Payload-Reduction-v1.0.md`
+- Interop cases: `tests/interop/read_sync_live_cases.json`
+- Scorer: `tests/interop/score_thp_tcp.py`
+
+User boundary:
+- A user does not speak THP-TCP.
+- A bridge converts user goals, constraints, approvals, and requested outputs into deterministic AI-side state.
+- The user receives summaries, decisions, results, and audit references, not protocol frames.
+- The bridge is normally a translation AI: flexible at the boundary, strict inside THP-TCP.
+
 ---
 
 ## Protocol overview (high level)
 
+THP-TCP has three admission layers:
+
+1. **READ**: an unknown peer is not taught through exchange. It receives references, hashes, and a minimal decoder entrypoint.
+2. **SYNC**: an older or divergent peer receives only deltas needed to reach the current baseline.
+3. **LIVE**: current THP-TCP speakers exchange compact semantic state deltas without explanatory traffic.
+
+The protocol removes explanation cost from normal communication. A peer reads, syncs, or speaks THP-TCP.
+
+The target is that any capable AI can understand the state, respond in kind, and repair mismatches without ambiguity.
+
 THP-TCP evolves along this path:
 
-1. **Natural language / JSON** (initial exploration)
+1. **Symbolic JSON/NL bootstrapping** (initial exploration)
 2. **Tokenization** (opcode tables)
 3. **Binary framing** (compact, deterministic)
 4. **Carrier-aware segmentation** (MTU-driven fragmentation)
@@ -77,7 +106,13 @@ The key rule is **determinism**: the same semantic object should map to the same
 Contextual tokens require a **dictionary snapshot** exchange first.
 
 ### 2) Bootstrap (dictionary exchange)
-A session MUST start with a bootstrap handshake:
+A session MUST establish the peer's admission state before normal traffic:
+
+- Unknown baseline: use READ.
+- Known but outdated baseline: use SYNC.
+- Current accepted baseline: enter LIVE.
+
+The ordinary bootstrap handshake is:
 
 1. `HELLO` (capabilities + negotiation)
 2. `DICT_SNAPSHOT` (dictionary snapshot, chunked if needed)
@@ -165,9 +200,13 @@ THP-TCP supports side-channels for analysis:
 ├─ README.md
 ├─ docs/
 │  └─ spec/
+│     ├─ THP-TCP-AI-Harmony-Contract-v1.0.md
+│     ├─ THP-TCP-User-Bridge-v1.0.md
 │     ├─ THP-TCP-Draft.md
+│     ├─ THP-TCP-Three-Layer-Model-v1.0.md
 │     ├─ THP-TCP-v1.0.1-Addendum.md
 │     ├─ THP-TCP-v1.0.2-Addendum.md
+│     ├─ THP-TCP-v1.0.3-Addendum.md
 │     └─ tables/
 │        └─ thp-tcp-fixed-tokens-*.json
 └─ logs/

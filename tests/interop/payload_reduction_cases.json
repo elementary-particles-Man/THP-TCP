@@ -1,0 +1,14 @@
+{
+  "schema": "THP-TCP-Payload-Reduction-Cases",
+  "version": "1.0",
+  "cases": [
+    {
+      "case_id": "market-risk-live-delta",
+      "text": "I think this market move is moderately risky but the confidence is high and urgency is elevated.",
+      "json": "{\"state_id\":7,\"delta_seq\":42,\"intent\":3,\"confidence\":220,\"urgency\":180,\"risk\":90,\"affect_tag\":4,\"affect_score\":170,\"contradiction_pressure\":12,\"novelty\":40,\"trust_delta\":-3}",
+      "expected_thp_tcp_bytes": 19,
+      "must_be_smaller_than_text": true,
+      "must_be_smaller_than_json": true
+    }
+  ]
+}
