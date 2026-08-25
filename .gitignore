@@ -93,3 +93,6 @@ node_modules/
 *.fbs_generated.*
 .codex_backups/
 Olds/
+
+# Local ephemeral development helpers
+.scratch/
